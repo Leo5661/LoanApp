@@ -2,16 +2,17 @@ import React, {useEffect} from 'react';
 // import {useAuth} from '../hooks/useAuth';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/RootNavigator';
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
+import {useAuth} from '../hooks/useAuth';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
 const SplashScreen = ({navigation}: Props) => {
-  // const {user} = useAuth();
+  const {user} = useAuth();
 
   useEffect(() => {
     setTimeout(() => {
-      if (true) {
+      if (!user) {
         navigation.replace('Auth');
       } else {
         navigation.replace('Main');
@@ -21,7 +22,13 @@ const SplashScreen = ({navigation}: Props) => {
 
   return (
     <View className="h-full w-full items-center justify-center">
-      <Text className="text-base text-black">SignUpScreen</Text>
+      <View className="w-full items-center justify-center">
+        <Image
+          className="h-44 w-36 animate-bounce border"
+          source={require('../assets/splash.png')}
+        />
+      </View>
+      <Text className="text-2xl tracking-wider text-slate-900">Loan App</Text>
     </View>
   );
 };

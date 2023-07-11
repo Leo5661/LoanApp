@@ -1,24 +1,62 @@
-// import {useState, useEffect} from 'react';
-// import {getAuth, onAuthStateChanged, User} from 'firebase/auth';
+import {useState, useEffect} from 'react';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
-// const auth = getAuth();
+export const useAuth = () => {
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-// export function useAuth() {
-//   const [user, setUser] = useState<User>();
+  // const signUpUsingEmailAndPassword = async (
+  //   email: string,
+  //   password: string,
+  // ) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await createUserWithEmailAndPassword(
+  //       FIREBASE_AUTH,
+  //       email,
+  //       password,
+  //     );
+  //     console.log(res);
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-//   useEffect(() => {
-//     const unSubscribeFromAuthStateChanged = onAuthStateChanged(auth, user => {
-//       if (user) {
-//         setUser(user);
-//       } else {
-//         setUser(undefined);
-//       }
-//     });
+  // const signInUsingEmailAndPassword = async (
+  //   email: string,
+  //   password: string,
+  // ) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await signInWithEmailAndPassword(
+  //       FIREBASE_AUTH,
+  //       email,
+  //       password,
+  //     );
+  //     console.log(res);
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-//     return unSubscribeFromAuthStateChanged;
-//   }, []);
+  useEffect(() => {
+    auth().onAuthStateChanged(user => {
+      if (user) {
+        setUser(user);
+        console.log(user.uid);
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+  }, []);
 
-//   return {
-//     user,
-//   };
-// }
+  return {
+    user,
+    isLoading,
+  };
+};
