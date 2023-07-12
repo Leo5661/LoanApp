@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-// import {useAuth} from '../hooks/useAuth';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/RootNavigator';
 import {Image, Text, View} from 'react-native';
@@ -11,14 +10,15 @@ const SplashScreen = ({navigation}: Props) => {
   const {user} = useAuth();
 
   useEffect(() => {
+    console.log(`The user is ${user}`);
     setTimeout(() => {
       if (!user) {
-        navigation.replace('Auth');
+        navigation.replace('AuthStack', {screen: 'SignIn'});
       } else {
-        navigation.replace('Main');
+        navigation.replace('MainStack', {screen: 'Home'});
       }
     }, 3000);
-  });
+  }, []);
 
   return (
     <View className="h-full w-full items-center justify-center">

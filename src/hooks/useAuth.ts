@@ -24,24 +24,20 @@ export const useAuth = () => {
   //   }
   // };
 
-  // const signInUsingEmailAndPassword = async (
-  //   email: string,
-  //   password: string,
-  // ) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await signInWithEmailAndPassword(
-  //       FIREBASE_AUTH,
-  //       email,
-  //       password,
-  //     );
-  //     console.log(res);
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const signInUsingEmailAndPassword = async (
+    email: string,
+    password: string,
+  ) => {
+    setIsLoading(true);
+    try {
+      const res = await auth().signInWithEmailAndPassword(email, password);
+      return res;
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     auth().onAuthStateChanged(user => {
@@ -58,5 +54,6 @@ export const useAuth = () => {
   return {
     user,
     isLoading,
+    signInUsingEmailAndPassword,
   };
 };

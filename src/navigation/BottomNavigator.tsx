@@ -1,15 +1,27 @@
-import {Text, View} from 'react-native';
 import React from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from './RootNavigator';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Main'>;
+import HomeScreen from '../screens/HomeScreen';
+import LoanRepayScreen from '../screens/LoanRepayScreen';
 
-const BottomNavigator = ({navigation}: Props) => {
+export type BottomNavStackParam = {
+  Splash: undefined;
+  Home: undefined;
+  LoanRepay: undefined;
+};
+
+const BottomNavStack = createMaterialBottomTabNavigator<BottomNavStackParam>();
+
+const BottomNavigator = () => {
   return (
-    <View className="h-full w-full items-center justify-center">
-      <Text className="text-base text-black">BottomNavigator</Text>
-    </View>
+    <BottomNavStack.Navigator
+      initialRouteName="Home"
+      activeColor="#2d548f"
+      inactiveColor="#77797c"
+    >
+      <BottomNavStack.Screen name="Home" component={HomeScreen} />
+      <BottomNavStack.Screen name="LoanRepay" component={LoanRepayScreen} />
+    </BottomNavStack.Navigator>
   );
 };
 

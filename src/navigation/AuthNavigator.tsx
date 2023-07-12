@@ -1,24 +1,20 @@
 import React from 'react';
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
-import {RootStackParamList} from './RootNavigator';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import HomeScreen from '../screens/HomeScreen';
+import BottomNavigator, {BottomNavStackParam} from './BottomNavigator';
+import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type AuthStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
+  Main: NavigatorScreenParams<BottomNavStackParam>;
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Auth'>;
-
-const AuthNavigator = ({navigation}: Props) => {
+const AuthNavigator = () => {
   return (
     <AuthStack.Navigator
       initialRouteName="SignIn"
@@ -26,6 +22,7 @@ const AuthNavigator = ({navigation}: Props) => {
     >
       <AuthStack.Screen name="SignIn" component={SignInScreen} />
       <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+      <AuthStack.Screen name="Main" component={BottomNavigator} />
     </AuthStack.Navigator>
   );
 };
