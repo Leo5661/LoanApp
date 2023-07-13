@@ -5,24 +5,20 @@ export const useAuth = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // const signUpUsingEmailAndPassword = async (
-  //   email: string,
-  //   password: string,
-  // ) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await createUserWithEmailAndPassword(
-  //       FIREBASE_AUTH,
-  //       email,
-  //       password,
-  //     );
-  //     console.log(res);
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const signUpUsingEmailAndPassword = async (
+    email: string,
+    password: string,
+  ) => {
+    setIsLoading(true);
+    try {
+      const res = await auth().createUserWithEmailAndPassword(email, password);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const signInUsingEmailAndPassword = async (
     email: string,
@@ -55,5 +51,6 @@ export const useAuth = () => {
     user,
     isLoading,
     signInUsingEmailAndPassword,
+    signUpUsingEmailAndPassword,
   };
 };
