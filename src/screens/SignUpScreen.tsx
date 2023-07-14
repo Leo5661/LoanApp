@@ -1,5 +1,5 @@
 import {View, Text, TextInput, Button, Pressable, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '../navigation/AuthNavigator';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
@@ -20,13 +20,17 @@ const SignUpScreen = ({navigation}: Props) => {
 
   const isPasswordValid = password === confirmPassword;
 
+  useEffect(() => {
+    if (user) {
+      navigation.replace('Main', {screen: 'Home'});
+    }
+  }, [user]);
+
   const handleSignUp = async () => {
     if (isValid) {
       if (isPasswordValid) {
         await signUpUsingEmailAndPassword(email, password);
-        if (user) {
-          navigation.replace('Main', {screen: 'Home'});
-        } else {
+        if (!user) {
           ToastAndroid.show(
             'Something went wrong Please try again!',
             ToastAndroid.SHORT,

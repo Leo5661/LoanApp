@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 export type User = {
   uId: string;
@@ -22,16 +22,16 @@ export const userSlice = createSlice({
   name: 'User',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-    setLoading: (state, action) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setError: (state, action) => {
+    setError: (state, action: PayloadAction<boolean>) => {
       state.error = action.payload;
     },
-    resetUser: (state, action) => {
+    resetUser: state => {
       state.user = undefined;
       state.loading = false;
       state.error = false;

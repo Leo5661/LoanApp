@@ -1,5 +1,5 @@
 import {View, Text, TextInput, Image, Alert, ToastAndroid} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthStackParamList} from '../navigation/AuthNavigator';
 import {useAuth} from '../hooks/useAuth';
@@ -16,12 +16,16 @@ const SignInScreen = ({navigation}: Props) => {
 
   const isValid = email.length != 0 && password.length != 0;
 
+  useEffect(() => {
+    if (user) {
+      navigation.replace('Main', {screen: 'Home'});
+    }
+  }, [user]);
+
   const handleSignIn = async () => {
     if (isValid) {
       await signInUsingEmailAndPassword(email, password);
-      if (user) {
-        navigation.replace('Main', {screen: 'Home'});
-      } else {
+      if (!user) {
         ToastAndroid.show(
           'Please enter correct email & password',
           ToastAndroid.SHORT,
