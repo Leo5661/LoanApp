@@ -10,12 +10,14 @@ const SplashScreen = ({navigation}: Props) => {
   const {user} = useAuth();
 
   useEffect(() => {
-    console.log(`The user is ${user}`);
     setTimeout(() => {
       if (!user) {
         navigation.replace('AuthStack', {screen: 'SignIn'});
       } else {
-        navigation.replace('MainStack', {screen: 'Home'});
+        navigation.replace('MainStack', {
+          screen: 'HomeStack',
+          params: {screen: 'Home'},
+        });
       }
     }, 3000);
   }, []);

@@ -22,7 +22,10 @@ const SignUpScreen = ({navigation}: Props) => {
 
   useEffect(() => {
     if (user) {
-      navigation.replace('Main', {screen: 'Home'});
+      navigation.replace('Main', {
+        screen: 'HomeStack',
+        params: {screen: 'Home'},
+      });
     }
   }, [user]);
 
