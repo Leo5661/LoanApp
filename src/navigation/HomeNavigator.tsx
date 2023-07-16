@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import ApplyLoanScreen from '../screens/ApplyLoanScreen';
 import LoanPackage from '../screens/LoanPackage';
+import CheckEligibilityScreen from '../screens/CheckEligibilityScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -27,6 +28,10 @@ const HomeNavigator = () => {
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="ApplyLoan" component={ApplyLoanScreen} />
       <HomeStack.Screen name="LoanPackage" component={LoanPackage} />
+      <HomeStack.Screen
+        name="CheckEligibility"
+        component={CheckEligibilityScreen}
+      />
     </HomeStack.Navigator>
   );
 };

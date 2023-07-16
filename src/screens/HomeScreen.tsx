@@ -77,7 +77,7 @@ const HomeScreen = ({navigation}: Props) => {
         </View>
 
         <ActiveLoanCard
-          isActiveLoan={false}
+          isActiveLoan={true}
           principleAmount={10000}
           intrestAmount={11500}
           loanDate={new Date()}

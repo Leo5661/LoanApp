@@ -1,44 +1,91 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import {Loan} from './loanSlice';
 
 export type User = {
-  uId: string;
-  name: string;
-  email: string;
+  uId: string | undefined;
+  name: string | undefined;
+  email: string | undefined;
+  age: string | undefined;
+  phone: string | undefined;
+  address: string | undefined;
+  jobType: string | undefined;
+  companyName: string | undefined;
+  position: string | undefined;
+  monthlyPay: number | undefined;
+  loans: Loan[];
 };
 
-export type UserState = {
-  user: User | undefined;
-  loading: boolean;
-  error: boolean;
-};
-
-const initialState: UserState = {
-  user: undefined,
-  loading: false,
-  error: false,
+const initialState: User = {
+  uId: undefined,
+  name: undefined,
+  age: undefined,
+  email: undefined,
+  phone: undefined,
+  address: undefined,
+  jobType: undefined,
+  companyName: undefined,
+  position: undefined,
+  monthlyPay: undefined,
+  loans: [],
 };
 
 export const userSlice = createSlice({
   name: 'User',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
+    setUserName: (state, action: PayloadAction<string>) => {
+      console.log(`${state.name} : action: ${action.payload}`);
+      state.name = action.payload;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+
+    setUserEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
     },
-    setError: (state, action: PayloadAction<boolean>) => {
-      state.error = action.payload;
+
+    setUserAge: (state, action: PayloadAction<string>) => {
+      state.age = action.payload;
     },
-    resetUser: state => {
-      state.user = undefined;
-      state.loading = false;
-      state.error = false;
+
+    setUserPhone: (state, action: PayloadAction<string>) => {
+      state.phone = action.payload;
+    },
+
+    setUserAddress: (state, action: PayloadAction<string>) => {
+      state.address = action.payload;
+    },
+
+    setUserJobType: (state, action: PayloadAction<string>) => {
+      state.jobType = action.payload;
+    },
+
+    setUserCompName: (state, action: PayloadAction<string>) => {
+      state.companyName = action.payload;
+    },
+
+    setUserPosition: (state, action: PayloadAction<string>) => {
+      state.position = action.payload;
+    },
+
+    setUserMonthlyPay: (state, action: PayloadAction<number>) => {
+      state.monthlyPay = action.payload;
+    },
+
+    setLoan: (state, action: PayloadAction<Loan[]>) => {
+      state.loans = action.payload;
     },
   },
 });
 
-export const {setUser, setLoading, setError, resetUser} = userSlice.actions;
+export const {
+  setUserName,
+  setUserAge,
+  setUserPhone,
+  setUserEmail,
+  setUserAddress,
+  setUserJobType,
+  setUserCompName,
+  setUserPosition,
+  setUserMonthlyPay,
+} = userSlice.actions;
 
 export default userSlice.reducer;
