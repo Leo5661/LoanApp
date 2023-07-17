@@ -5,6 +5,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
 import ApplicationFormCategory from '../components/ApplicationFormCategory';
 import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {
   setUserAddress,
   setUserAge,
@@ -21,6 +23,8 @@ import {isEligible} from '../utils/CheckLoanEligibility';
 import {Image} from 'react-native';
 import {PointsList} from '../utils/LoanInEligiblePointsList';
 import PointsCard from '../components/PointsCard';
+import LoanCard from '../components/EmiCard';
+import EmiCard from '../components/EmiCard';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'CheckEligibility'>;
 const title = 'Check Eligibility';
@@ -81,16 +85,31 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
   }
 
   return (
-    <View className="flex-grow flex-col">
+    <View className="flex-grow flex-col bg-white">
       <TopBar title={title} onBackPress={() => navigation.goBack()} />
       <ScrollView className="px-4">
-        <Text className="mt-4 border-b border-gray-200 px-4 pb-2 text-lg font-medium text-gray-500">
+        <Text className="mt-4 border-b border-gray-200 px-4 pb-2 text-3xl font-semibold text-gray-600">
           Requested Loan
         </Text>
+
+        <Text className="mt-4 px-4 text-base text-gray-500"> Loan Amount </Text>
+        <View className="flex-row items-end justify-start px-4">
+          <FontAwesome name="rupee" color={'gray'} size={30} />
+          <View className="ml-2 flex-row">
+            <Text className="items-bottom text-3xl text-black">{'10000'}</Text>
+          </View>
+        </View>
+
+        <EmiCard />
       </ScrollView>
 
-      <View className="my-4">
-        <MaterialButtonSolid text="Check Eligibility" onPress={() => {}} />
+      <View className="my-4 p-4">
+        <MaterialButtonSolid
+          text="Proceed"
+          onPress={() => {
+            navigation.navigate('DocumentVerification');
+          }}
+        />
       </View>
     </View>
   );

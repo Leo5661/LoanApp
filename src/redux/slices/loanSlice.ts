@@ -22,7 +22,7 @@ const initialState: Loan = {
   borrowedDate: undefined,
 };
 
-export const userSlice = createSlice({
+export const loanSlice = createSlice({
   name: 'Loan',
   initialState,
   reducers: {
@@ -36,6 +36,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const {setLoanAmount, setLoanPeriod} = userSlice.actions;
+export const {setLoanAmount, setLoanPeriod} = loanSlice.actions;
 
-export default userSlice.reducer;
+export default loanSlice.reducer;

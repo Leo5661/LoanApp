@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ApplyLoanScreen from '../screens/ApplyLoanScreen';
 import LoanPackage from '../screens/LoanPackage';
 import CheckEligibilityScreen from '../screens/CheckEligibilityScreen';
+import DocumentVerification from '../screens/DocumentVerification';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -13,6 +14,7 @@ export type HomeStackParamList = {
   Settings: undefined;
   UploadDoc: undefined;
   CheckEligibility: undefined;
+  DocumentVerification: undefined;
   LoanPackage: undefined;
   Status: undefined;
 };
@@ -31,6 +33,10 @@ const HomeNavigator = () => {
       <HomeStack.Screen
         name="CheckEligibility"
         component={CheckEligibilityScreen}
+      />
+      <HomeStack.Screen
+        name="DocumentVerification"
+        component={DocumentVerification}
       />
     </HomeStack.Navigator>
   );
