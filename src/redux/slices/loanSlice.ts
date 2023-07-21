@@ -27,11 +27,19 @@ export const loanSlice = createSlice({
   initialState,
   reducers: {
     setLoanAmount: (state, action: PayloadAction<number>) => {
-      state.principleAmount = action.payload;
+      if (isNaN(action.payload)) {
+        state.principleAmount = 0;
+      } else {
+        state.principleAmount = action.payload;
+      }
     },
 
     setLoanPeriod: (state, action: PayloadAction<number>) => {
-      state.loanPeriod = action.payload;
+      if (isNaN(action.payload)) {
+        state.loanPeriod = 0;
+      } else {
+        state.loanPeriod = action.payload;
+      }
     },
   },
 });

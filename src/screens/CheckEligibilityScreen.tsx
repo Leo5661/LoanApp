@@ -1,39 +1,24 @@
-import {ScrollView, Text, TextInput, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import React from 'react';
 import TopBar from '../components/TopBar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
-import ApplicationFormCategory from '../components/ApplicationFormCategory';
-import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
+import {useAppSelector} from '../hooks/useReduxHooks';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {
-  setUserAddress,
-  setUserAge,
-  setUserCompName,
-  setUserJobType,
-  setUserMonthlyPay,
-  setUserName,
-  setUserPhone,
-  setUserPosition,
-} from '../redux/slices/userSlice';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
-import {setLoanAmount, setLoanPeriod} from '../redux/slices/loanSlice';
-import {isEligible} from '../utils/CheckLoanEligibility';
 import {Image} from 'react-native';
 import {PointsList} from '../utils/LoanInEligiblePointsList';
 import PointsCard from '../components/PointsCard';
-import LoanCard from '../components/EmiCard';
 import EmiCard from '../components/EmiCard';
+import {isEligible} from '../utils/CheckLoanEligibility';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'CheckEligibility'>;
 const title = 'Check Eligibility';
+const RATE_OF_INTREST = 15;
 
 const CheckEligibilityScreen = ({navigation, route}: Props) => {
-  const name = useAppSelector(state => state.persistedReducer.user.name);
   const age = useAppSelector(state => state.persistedReducer.user.age);
-  const phone = useAppSelector(state => state.persistedReducer.user.phone);
-  const address = useAppSelector(state => state.persistedReducer.user.address);
   const monthlyPay = useAppSelector(
     state => state.persistedReducer.user.monthlyPay,
   );
@@ -43,9 +28,10 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
   const repaymentPeriod = useAppSelector(
     state => state.persistedReducer.loan.loanPeriod,
   );
-  const dispatch = useAppDispatch();
 
-  if (false) {
+  const isEmployed = monthlyPay > 0;
+
+  if (!isEligible(age, isEmployed, monthlyPay, loanAmount, repaymentPeriod)) {
     return (
       <View className="flex-grow flex-col bg-white">
         <TopBar title={title} onBackPress={() => navigation.goBack()} />
@@ -96,11 +82,17 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
         <View className="flex-row items-end justify-start px-4">
           <FontAwesome name="rupee" color={'gray'} size={30} />
           <View className="ml-2 flex-row">
-            <Text className="items-bottom text-3xl text-black">{'10000'}</Text>
+            <Text className="items-bottom text-3xl text-black">
+              {loanAmount}
+            </Text>
           </View>
         </View>
 
-        <EmiCard />
+        <EmiCard
+          principleAmount={loanAmount}
+          time={repaymentPeriod}
+          rateOfIntrest={RATE_OF_INTREST}
+        />
       </ScrollView>
 
       <View className="my-4 p-4">

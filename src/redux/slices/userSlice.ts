@@ -2,30 +2,30 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {Loan} from './loanSlice';
 
 export type User = {
-  uId: string | undefined;
-  name: string | undefined;
-  email: string | undefined;
-  age: string | undefined;
-  phone: string | undefined;
-  address: string | undefined;
-  jobType: string | undefined;
-  companyName: string | undefined;
-  position: string | undefined;
-  monthlyPay: number | undefined;
+  uId: string;
+  name: string;
+  email: string;
+  age: string;
+  phone: string;
+  address: string;
+  jobType: string;
+  companyName: string;
+  position: string;
+  monthlyPay: number;
   loans: Loan[];
 };
 
 const initialState: User = {
-  uId: undefined,
-  name: undefined,
-  age: undefined,
-  email: undefined,
-  phone: undefined,
-  address: undefined,
-  jobType: undefined,
-  companyName: undefined,
-  position: undefined,
-  monthlyPay: undefined,
+  uId: '',
+  name: '',
+  age: '',
+  email: '',
+  phone: '',
+  address: '',
+  jobType: '',
+  companyName: '',
+  position: '',
+  monthlyPay: 0,
   loans: [],
 };
 
@@ -67,7 +67,11 @@ export const userSlice = createSlice({
     },
 
     setUserMonthlyPay: (state, action: PayloadAction<number>) => {
-      state.monthlyPay = action.payload;
+      if (isNaN(action.payload)) {
+        state.monthlyPay = 0;
+      } else {
+        state.monthlyPay = action.payload;
+      }
     },
 
     setLoan: (state, action: PayloadAction<Loan[]>) => {

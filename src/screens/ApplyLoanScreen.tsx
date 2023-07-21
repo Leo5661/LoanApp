@@ -1,11 +1,12 @@
 import {ScrollView, Text, TextInput, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import TopBar from '../components/TopBar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
 import ApplicationFormCategory from '../components/ApplicationFormCategory';
 import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
 import {
+  User,
   setUserAddress,
   setUserAge,
   setUserCompName,
@@ -17,6 +18,7 @@ import {
 } from '../redux/slices/userSlice';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
 import {setLoanAmount, setLoanPeriod} from '../redux/slices/loanSlice';
+import {isFormValid} from '../utils/FormValidation';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'ApplyLoan'>;
 const title = 'Apply Loan';
@@ -46,6 +48,23 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
   );
   const dispatch = useAppDispatch();
 
+  // const [open, setOpen] = useState(false);
+  // const [value, setValue] = useState('');
+  // const [timeItem, setTimeItem] = useState([
+  //   {
+  //     key: `1`,
+  //     value: '3',
+  //   },
+  //   {key: `2`, value: '6'},
+  //   {key: `3`, value: '12'},
+  // ]);
+
+  const sendData = (user: User) => {};
+
+  const handleSubmit = () => {
+    navigation.navigate('CheckEligibility');
+  };
+
   return (
     <View className="flex-grow flex-col">
       <TopBar title={title} onBackPress={() => navigation.goBack()} />
@@ -65,7 +84,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Name</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
             value={name}
             placeholderTextColor={'#a0a0a097'}
@@ -80,7 +99,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className=" flex-col items-start p-1">
           <Text>Age</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="numeric"
             value={age?.toString()}
             placeholderTextColor={'#a0a0a097'}
@@ -100,7 +119,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Phone</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="numeric"
             maxLength={10}
             value={phone}
@@ -116,7 +135,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className=" flex-col items-start p-1">
           <Text>Address</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
             value={address}
             placeholderTextColor={'#a0a0a097'}
@@ -136,7 +155,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Type of job</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
             placeholderTextColor={'#a0a0a097'}
             value={typeOfJob}
@@ -151,7 +170,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Company Name</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
             placeholderTextColor={'#a0a0a097'}
             value={companyName}
@@ -166,7 +185,7 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Position/Role</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
             placeholderTextColor={'#a0a0a097'}
             value={position}
@@ -186,13 +205,13 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Monthly Pay</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="numeric"
             maxLength={10}
             placeholderTextColor={'#a0a0a097'}
             value={monthlyPay?.toString()}
             onChangeText={text => {
-              dispatch(setUserMonthlyPay(parseInt(text)));
+              dispatch(setUserMonthlyPay(parseFloat(text)));
             }}
             placeholder="35,000"
             keyboardType="number-pad"
@@ -204,13 +223,13 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>Loan Amount</Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="numeric"
             maxLength={10}
             placeholderTextColor={'#a0a0a097'}
-            value={loanAmount.toString()}
+            value={loanAmount?.toString()}
             onChangeText={text => {
-              dispatch(setLoanAmount(parseInt(text)));
+              dispatch(setLoanAmount(parseFloat(text)));
             }}
             placeholder="10,000"
             keyboardType="number-pad"
@@ -220,28 +239,47 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         <View className="mt-1 flex-col items-start p-1">
           <Text>
             {`Repayment period `}
-            <Text className="text-xs font-extralight">(in Months)</Text>
+            <Text className="text-xs font-extralight">(in years)</Text>
           </Text>
           <TextInput
-            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-xl text-gray-800 focus:border-indigo-400"
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="numeric"
             maxLength={10}
             placeholderTextColor={'#a0a0a097'}
-            value={repaymentPeriod.toString()}
+            value={repaymentPeriod?.toString()}
             onChangeText={text => {
-              dispatch(setLoanPeriod(parseInt(text)));
+              dispatch(setLoanPeriod(parseFloat(text)));
             }}
-            placeholder="12"
+            placeholder="5"
             keyboardType="number-pad"
           />
         </View>
 
+        {/* <SelectList
+          setSelected={(val: any) => {
+            setValue(val);
+          }}
+          data={timeItem}
+        /> */}
+
         <View className="my-4">
           <MaterialButtonSolid
+            disabled={
+              !isFormValid(
+                name,
+                age,
+                phone,
+                address,
+                typeOfJob,
+                companyName,
+                position,
+                monthlyPay,
+                loanAmount,
+                repaymentPeriod,
+              )
+            }
             text="Check Eligibility"
-            onPress={() => {
-              navigation.navigate('CheckEligibility');
-            }}
+            onPress={handleSubmit}
           />
         </View>
       </ScrollView>

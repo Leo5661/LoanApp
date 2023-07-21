@@ -1,11 +1,22 @@
 import {View, Text, Pressable} from 'react-native';
 import React, {useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {getEMIInstalmentAmount} from '../utils/EmiPackageGen';
 
-type Props = {};
+type Props = {
+  principleAmount: number;
+  time: number;
+  rateOfIntrest: number;
+};
 
-const EmiCard = (props: Props) => {
+const EmiCard = ({principleAmount, time, rateOfIntrest}: Props) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
+
+  const {emi, totalOfEmi, totalPayment} = getEMIInstalmentAmount(
+    principleAmount,
+    rateOfIntrest,
+    time,
+  );
 
   return (
     <Pressable
@@ -27,12 +38,13 @@ const EmiCard = (props: Props) => {
           <View className="mt-2 flex-row items-end justify-start px-2">
             <FontAwesome name="rupee" color={'gray'} size={30} />
             <View className="ml-2 flex-row">
-              <Text className="items-bottom text-3xl text-black">
-                {'950 * '}
-              </Text>
+              <Text className="items-bottom text-3xl text-black">{`${emi} * `}</Text>
 
               <Text className="items-bottom text-xl text-gray-500">
-                {'12 months'}
+                {`${time * 12} `}
+                <Text className="items-bottom text-base text-gray-500">
+                  in months
+                </Text>
               </Text>
             </View>
           </View>
@@ -44,7 +56,7 @@ const EmiCard = (props: Props) => {
               Intrest Rate
             </Text>
             <Text className="w-fit text-base text-gray-500">
-              {`15% `}
+              {`${rateOfIntrest}% `}
               <Text className="w-fit text-sm text-gray-400">p.a.</Text>
             </Text>
           </View>
@@ -73,17 +85,21 @@ const EmiCard = (props: Props) => {
             </Text>
             <View className="flex-row items-center">
               <FontAwesome name="rupee" color={'gray'} size={12} />
-              <Text className="ml-1 text-lg font-semibold text-gray-600">{`10000`}</Text>
+              <Text className="ml-1 text-lg font-semibold text-gray-600">
+                {principleAmount}
+              </Text>
             </View>
           </View>
 
           <View className="my-1 flex-row justify-between">
             <Text className="text-lg font-normal text-gray-500">
-              Instalment Amount
+              Total Interest Amount
             </Text>
             <View className="flex-row items-center">
               <FontAwesome name="rupee" color={'gray'} size={12} />
-              <Text className="ml-1 text-lg font-semibold text-gray-600">{`10000`}</Text>
+              <Text className="ml-1 text-lg font-semibold text-gray-600">
+                {totalOfEmi}
+              </Text>
             </View>
           </View>
 
@@ -95,7 +111,9 @@ const EmiCard = (props: Props) => {
             </Text>
             <View className="flex-row items-center">
               <FontAwesome name="rupee" color={'gray'} size={12} />
-              <Text className="ml-1 text-lg font-semibold text-gray-600">{`10000`}</Text>
+              <Text className="ml-1 text-lg font-semibold text-gray-600">
+                {totalPayment}
+              </Text>
             </View>
           </View>
         </View>

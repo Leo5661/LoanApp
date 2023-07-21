@@ -8,7 +8,7 @@ export const isEligible = (
   const ageInt = parseInt(age);
   const loanAmountValid = loanAmount <= monthlyPay;
 
-  if (ageInt >= 18 && employStatus && loanAmountValid && repaymentPeriod < 12) {
+  if (ageInt >= 18 && employStatus && loanAmountValid && repaymentPeriod >= 1) {
     return true;
   }
   return false;
