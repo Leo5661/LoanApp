@@ -5,6 +5,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
 import ApplicationFormCategory from '../components/ApplicationFormCategory';
 import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
+import firestore from '@react-native-firebase/firestore';
 import {
   User,
   setUserAddress,
@@ -12,9 +13,10 @@ import {
   setUserCompName,
   setUserJobType,
   setUserMonthlyPay,
-  setUserName,
+  setUserfName,
   setUserPhone,
   setUserPosition,
+  setUserlName,
 } from '../redux/slices/userSlice';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
 import {setLoanAmount, setLoanPeriod} from '../redux/slices/loanSlice';
@@ -24,7 +26,8 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'ApplyLoan'>;
 const title = 'Apply Loan';
 
 const ApplyLoanScreen = ({navigation, route}: Props) => {
-  const name = useAppSelector(state => state.persistedReducer.user.name);
+  const fname = useAppSelector(state => state.persistedReducer.user.fname);
+  const lname = useAppSelector(state => state.persistedReducer.user.lname);
   const age = useAppSelector(state => state.persistedReducer.user.age);
   const phone = useAppSelector(state => state.persistedReducer.user.phone);
   const address = useAppSelector(state => state.persistedReducer.user.address);
@@ -46,22 +49,17 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
   const repaymentPeriod = useAppSelector(
     state => state.persistedReducer.loan.loanPeriod,
   );
+
+  const userData = useAppSelector(state => state.persistedReducer.user);
+
   const dispatch = useAppDispatch();
 
-  // const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState('');
-  // const [timeItem, setTimeItem] = useState([
-  //   {
-  //     key: `1`,
-  //     value: '3',
-  //   },
-  //   {key: `2`, value: '6'},
-  //   {key: `3`, value: '12'},
-  // ]);
-
-  const sendData = (user: User) => {};
+  const sendData = (userData: User) => {
+    firestore().collection('Users').doc(userData.uId).set({userData});
+  };
 
   const handleSubmit = () => {
+    sendData(userData);
     navigation.navigate('CheckEligibility');
   };
 
@@ -82,16 +80,31 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
         />
 
         <View className="mt-1 flex-col items-start p-1">
-          <Text>Name</Text>
+          <Text>First Name</Text>
           <TextInput
             className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
             inputMode="text"
-            value={name}
+            value={fname}
             placeholderTextColor={'#a0a0a097'}
             onChangeText={text => {
-              dispatch(setUserName(text));
+              dispatch(setUserfName(text));
             }}
-            placeholder="name"
+            placeholder="first name"
+            keyboardType="default"
+          />
+        </View>
+
+        <View className="flex-col items-start p-1">
+          <Text>Last Name</Text>
+          <TextInput
+            className="my-1 h-10 w-full rounded-md border border-gray-600 px-2 py-1 text-lg text-gray-800 focus:border-indigo-400"
+            inputMode="text"
+            value={lname}
+            placeholderTextColor={'#a0a0a097'}
+            onChangeText={text => {
+              dispatch(setUserlName(text));
+            }}
+            placeholder="last name"
             keyboardType="default"
           />
         </View>
@@ -255,18 +268,11 @@ const ApplyLoanScreen = ({navigation, route}: Props) => {
           />
         </View>
 
-        {/* <SelectList
-          setSelected={(val: any) => {
-            setValue(val);
-          }}
-          data={timeItem}
-        /> */}
-
         <View className="my-4">
           <MaterialButtonSolid
             disabled={
               !isFormValid(
-                name,
+                fname,
                 age,
                 phone,
                 address,

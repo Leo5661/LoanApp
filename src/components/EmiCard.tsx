@@ -1,7 +1,13 @@
 import {View, Text, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {getEMIInstalmentAmount} from '../utils/EmiPackageGen';
+import {useAppDispatch} from '../hooks/useReduxHooks';
+import {
+  setBorrowAmount,
+  setInstalment,
+  setIntrestRate,
+} from '../redux/slices/loanSlice';
 
 type Props = {
   principleAmount: number;
@@ -11,12 +17,18 @@ type Props = {
 
 const EmiCard = ({principleAmount, time, rateOfIntrest}: Props) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
-
+  const dispatch = useAppDispatch();
   const {emi, totalOfEmi, totalPayment} = getEMIInstalmentAmount(
     principleAmount,
     rateOfIntrest,
     time,
   );
+
+  useEffect(() => {
+    dispatch(setIntrestRate(rateOfIntrest));
+    dispatch(setInstalment(emi));
+    dispatch(setBorrowAmount(totalPayment));
+  }, [principleAmount, rateOfIntrest, time]);
 
   return (
     <Pressable

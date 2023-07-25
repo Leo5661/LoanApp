@@ -1,10 +1,22 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
+export enum LoanStatus {
+  NOT_APPLIED,
+  APPLICATION_SUBMITED,
+  DOCUMENT_VERIFICATION,
+  DOCUMENT_VERIFICATION_FAILED,
+  DOCUMENT_VERIFICATION_SUCCESS,
+  PENDING,
+  LOAN_SUCCESS,
+  LOAN_FAILURE,
+}
+
 export type Loan = {
   isActive: boolean;
   principleAmount: number;
   borrowAmount: number;
   loanPeriod: number;
+  loanStatus: LoanStatus;
   instalmentAmount: number;
   intrestRate: number;
   nextDueDate: Date | undefined;
@@ -14,8 +26,9 @@ export type Loan = {
 const initialState: Loan = {
   isActive: false,
   principleAmount: 0,
-  borrowAmount: 0,
   loanPeriod: 0,
+  borrowAmount: 0,
+  loanStatus: LoanStatus.NOT_APPLIED,
   instalmentAmount: 0,
   intrestRate: 0,
   nextDueDate: undefined,
@@ -41,9 +54,48 @@ export const loanSlice = createSlice({
         state.loanPeriod = action.payload;
       }
     },
+
+    setBorrowAmount: (state, action: PayloadAction<number>) => {
+      if (isNaN(action.payload)) {
+        state.borrowAmount = 0;
+      } else {
+        state.borrowAmount = action.payload;
+      }
+    },
+
+    setLoanStatus: (state, action: PayloadAction<LoanStatus>) => {
+      if (action.payload === LoanStatus.LOAN_SUCCESS) {
+        state.isActive = true;
+      }
+
+      state.loanStatus = action.payload;
+    },
+
+    setInstalment: (state, action: PayloadAction<number>) => {
+      if (isNaN(action.payload)) {
+        state.instalmentAmount = 0;
+      } else {
+        state.instalmentAmount = action.payload;
+      }
+    },
+
+    setIntrestRate: (state, action: PayloadAction<number>) => {
+      if (isNaN(action.payload)) {
+        state.intrestRate = 0;
+      } else {
+        state.intrestRate = action.payload;
+      }
+    },
   },
 });
 
-export const {setLoanAmount, setLoanPeriod} = loanSlice.actions;
+export const {
+  setLoanAmount,
+  setLoanPeriod,
+  setBorrowAmount,
+  setInstalment,
+  setIntrestRate,
+  setLoanStatus,
+} = loanSlice.actions;
 
 export default loanSlice.reducer;

@@ -3,15 +3,16 @@ import React from 'react';
 import TopBar from '../components/TopBar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
-import {useAppSelector} from '../hooks/useReduxHooks';
+import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import firestore from '@react-native-firebase/firestore';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
 import {Image} from 'react-native';
 import {PointsList} from '../utils/LoanInEligiblePointsList';
 import PointsCard from '../components/PointsCard';
 import EmiCard from '../components/EmiCard';
 import {isEligible} from '../utils/CheckLoanEligibility';
+import {Loan, LoanStatus, setLoanStatus} from '../redux/slices/loanSlice';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'CheckEligibility'>;
 const title = 'Check Eligibility';
@@ -28,8 +29,24 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
   const repaymentPeriod = useAppSelector(
     state => state.persistedReducer.loan.loanPeriod,
   );
+  const uid = useAppSelector(state => state.persistedReducer.user.uId);
+  const loan = useAppSelector(state => state.persistedReducer.loan);
+  const dispatch = useAppDispatch();
 
   const isEmployed = monthlyPay > 0;
+
+  const sendData = (loan: Loan) => {
+    firestore().collection('Users').doc(uid).update({
+      'userData.loans': loan,
+    });
+  };
+
+  const handleProceed = () => {
+    dispatch(setLoanStatus(LoanStatus.APPLICATION_SUBMITED));
+    console.log(loan);
+    sendData(loan);
+    navigation.navigate('DocumentVerification');
+  };
 
   if (!isEligible(age, isEmployed, monthlyPay, loanAmount, repaymentPeriod)) {
     return (
@@ -96,12 +113,7 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
       </ScrollView>
 
       <View className="my-4 p-4">
-        <MaterialButtonSolid
-          text="Proceed"
-          onPress={() => {
-            navigation.navigate('DocumentVerification');
-          }}
-        />
+        <MaterialButtonSolid text="Proceed" onPress={handleProceed} />
       </View>
     </View>
   );

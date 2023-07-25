@@ -1,5 +1,5 @@
 export const isFormValid = (
-  name: string,
+  fname: string,
   age: string,
   phone: string,
   address: string,
@@ -11,7 +11,7 @@ export const isFormValid = (
   repaymentTime: number,
 ): boolean => {
   const isDataValid =
-    name.length != 0 &&
+    fname.length != 0 &&
     age.length != 0 &&
     phone.length != 0 &&
     address.length != 0 &&

@@ -3,7 +3,8 @@ import {Loan} from './loanSlice';
 
 export type User = {
   uId: string;
-  name: string;
+  fname: string;
+  lname: string;
   email: string;
   age: string;
   phone: string;
@@ -15,9 +16,10 @@ export type User = {
   loans: Loan[];
 };
 
-const initialState: User = {
+const initialState: User | null = {
   uId: '',
-  name: '',
+  fname: '',
+  lname: '',
   age: '',
   email: '',
   phone: '',
@@ -33,9 +35,16 @@ export const userSlice = createSlice({
   name: 'User',
   initialState,
   reducers: {
-    setUserName: (state, action: PayloadAction<string>) => {
-      console.log(`${state.name} : action: ${action.payload}`);
-      state.name = action.payload;
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.uId = action.payload;
+    },
+
+    setUserfName: (state, action: PayloadAction<string>) => {
+      state.fname = action.payload;
+    },
+
+    setUserlName: (state, action: PayloadAction<string>) => {
+      state.lname = action.payload;
     },
 
     setUserEmail: (state, action: PayloadAction<string>) => {
@@ -74,14 +83,24 @@ export const userSlice = createSlice({
       }
     },
 
-    setLoan: (state, action: PayloadAction<Loan[]>) => {
-      state.loans = action.payload;
+    setLoan: (state, action: PayloadAction<Loan>) => {
+      state.loans.push(action.payload);
+    },
+
+    setUserfromCloud: (state, action: PayloadAction<User | null>) => {
+      if (action.payload != null) {
+        return action.payload;
+      } else {
+        return initialState;
+      }
     },
   },
 });
 
 export const {
-  setUserName,
+  setUserId,
+  setUserfName,
+  setUserlName,
   setUserAge,
   setUserPhone,
   setUserEmail,
@@ -90,6 +109,7 @@ export const {
   setUserCompName,
   setUserPosition,
   setUserMonthlyPay,
+  setUserfromCloud,
 } = userSlice.actions;
 
 export default userSlice.reducer;

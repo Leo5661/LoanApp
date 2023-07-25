@@ -1,9 +1,33 @@
 import {useState, useEffect} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {useAppDispatch} from './useReduxHooks';
+import {
+  setUserEmail,
+  setUserId,
+  setUserfromCloud,
+} from '../redux/slices/userSlice';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 
 export const useAuth = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(true);
+
+  const checkUser = async (user: FirebaseAuthTypes.User) => {
+    const userResult = await firestore()
+      .collection('Users')
+      .doc(user.uid)
+      .get();
+
+    if (userResult) {
+      const result = userResult.data();
+      dispatch(setUserfromCloud(result?.userData));
+    } else {
+      dispatch(setUserId(user.uid));
+    }
+  };
 
   const signUpUsingEmailAndPassword = async (
     email: string,
@@ -12,7 +36,10 @@ export const useAuth = () => {
     setIsLoading(true);
     try {
       const res = await auth().createUserWithEmailAndPassword(email, password);
-      console.log(res);
+      console.log(res.user);
+      if (res.user.email) {
+        dispatch(setUserEmail(res.user.email));
+      }
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -27,7 +54,11 @@ export const useAuth = () => {
     setIsLoading(true);
     try {
       const res = await auth().signInWithEmailAndPassword(email, password);
-      return res;
+      console.log(res.user);
+      if (res.user.email) {
+        dispatch(setUserEmail(res.user.email));
+      }
+      checkUser(res.user);
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -38,10 +69,12 @@ export const useAuth = () => {
   useEffect(() => {
     auth().onAuthStateChanged(user => {
       if (user) {
+        // dispatch(setUserEmail(user.email));
         setUser(user);
-        console.log(user.uid);
+        checkUser(user);
       } else {
         setUser(null);
+        dispatch(setUserfromCloud(null));
       }
       setIsLoading(false);
     });

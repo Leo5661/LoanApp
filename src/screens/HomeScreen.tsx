@@ -14,13 +14,15 @@ import {HomeStackParamList} from '../navigation/HomeNavigator';
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
 const HomeScreen = ({navigation}: Props) => {
+  const name = useAppSelector(state => state.persistedReducer.user.fname);
+  const user = useAppSelector(state => state.persistedReducer.user);
+
   const isBioAuth = useAppSelector(
     state => state.persistedReducer.bioAuth.isBioAuth,
   );
   const dispatch = useAppDispatch();
   const isHwPresent = RTNBioAuth?.getAvailableBiometric();
   const [biometric, setBiometric] = useState<string | undefined>('');
-  const [userName, setUserName] = useState<string>('Amita');
   const [isNotification, setIsNotification] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const HomeScreen = ({navigation}: Props) => {
       try {
         const HW = await RTNBioAuth?.getAvailableBiometric();
         console.log(HW);
+        console.log(user);
         setBiometric(HW);
       } catch (e) {
         console.log(e);
@@ -72,7 +75,7 @@ const HomeScreen = ({navigation}: Props) => {
       <View className="w-full flex-grow flex-col items-center">
         <View className="w-full items-start px-4 py-2">
           <Text className="text-xl font-medium text-gray-800">
-            Hi, {userName} &#128075;
+            Hi, {name} &#128075;
           </Text>
         </View>
 
