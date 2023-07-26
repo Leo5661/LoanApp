@@ -3,7 +3,7 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 export enum LoanStatus {
   NOT_APPLIED,
   APPLICATION_SUBMITED,
-  DOCUMENT_VERIFICATION,
+  DOCUMENT_SUBMITED,
   DOCUMENT_VERIFICATION_FAILED,
   DOCUMENT_VERIFICATION_SUCCESS,
   PENDING,

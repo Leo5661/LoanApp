@@ -6,7 +6,9 @@ import TopBar from '../components/TopBar';
 import DocUploadCard from '../components/DocUploadCard';
 import {DocList} from '../utils/TypesofDocuments';
 import MaterialButtonSolid from '../components/MaterialButtonSolid';
-import {useAppSelector} from '../hooks/useReduxHooks';
+import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
+import {LoanStatus, setLoanStatus} from '../redux/slices/loanSlice';
+import firestore from '@react-native-firebase/firestore';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'DocumentVerification'>;
 const title = 'Document Verification';
@@ -15,9 +17,30 @@ const DocumentVerification = ({navigation}: Props) => {
   const docList = useAppSelector(
     state => state.persistedReducer.doc.verificationDocList,
   );
+  const status = useAppSelector(
+    state => state.persistedReducer.loan.loanStatus,
+  );
+  const uid = useAppSelector(state => state.persistedReducer.user.uId);
+
+  const dispatch = useAppDispatch();
+
+  const updateStatusOnCloud = () => {
+    firestore().collection('Users').doc(uid).update({
+      'userData.loans.loanStatus': status,
+    });
+  };
+
+  // const uploadDocOnCloud = () => {
+  //   firestore().collection('Users').doc(uid).update({
+  //     doc: docList,
+  //   });
+  // };
 
   const handleUploadDoc = () => {
-    console.log(docList);
+    dispatch(setLoanStatus(LoanStatus.DOCUMENT_SUBMITED));
+    updateStatusOnCloud();
+    // uploadDocOnCloud();
+    navigation.navigate('Status');
   };
 
   return (

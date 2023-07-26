@@ -16,6 +16,7 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 const HomeScreen = ({navigation}: Props) => {
   const name = useAppSelector(state => state.persistedReducer.user.fname);
   const user = useAppSelector(state => state.persistedReducer.user);
+  const loan = useAppSelector(state => state.persistedReducer.loan);
 
   const isBioAuth = useAppSelector(
     state => state.persistedReducer.bioAuth.isBioAuth,
@@ -31,6 +32,7 @@ const HomeScreen = ({navigation}: Props) => {
         const HW = await RTNBioAuth?.getAvailableBiometric();
         console.log(HW);
         console.log(user);
+        console.log(loan);
         setBiometric(HW);
       } catch (e) {
         console.log(e);

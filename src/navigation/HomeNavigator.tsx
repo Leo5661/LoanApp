@@ -6,6 +6,7 @@ import ApplyLoanScreen from '../screens/ApplyLoanScreen';
 import LoanPackage from '../screens/LoanPackage';
 import CheckEligibilityScreen from '../screens/CheckEligibilityScreen';
 import DocumentVerification from '../screens/DocumentVerification';
+import LoanStatusScreen from '../screens/LoanStatusScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -38,6 +39,7 @@ const HomeNavigator = () => {
         name="DocumentVerification"
         component={DocumentVerification}
       />
+      <HomeStack.Screen name="Status" component={LoanStatusScreen} />
     </HomeStack.Navigator>
   );
 };

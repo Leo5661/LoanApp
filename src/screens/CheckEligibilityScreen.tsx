@@ -43,7 +43,6 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
 
   const handleProceed = () => {
     dispatch(setLoanStatus(LoanStatus.APPLICATION_SUBMITED));
-    console.log(loan);
     sendData(loan);
     navigation.navigate('DocumentVerification');
   };
