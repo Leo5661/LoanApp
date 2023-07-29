@@ -82,13 +82,6 @@ const HomeScreen = ({navigation}: Props) => {
         </View>
 
         <ActiveLoanCard
-          isActiveLoan={true}
-          principleAmount={10000}
-          intrestAmount={11500}
-          loanDate={new Date()}
-          intrest={15}
-          nextRepayment={new Date()}
-          repayedAmount={1500}
           onPressCheckEligibility={() => {
             navigation.navigate('ApplyLoan');
           }}

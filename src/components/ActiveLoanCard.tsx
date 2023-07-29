@@ -2,20 +2,17 @@ import {View, Text, Pressable} from 'react-native';
 import React, {useState} from 'react';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useAppSelector} from '../hooks/useReduxHooks';
 
 type Props = {
-  isActiveLoan: boolean;
-  principleAmount: number;
-  intrestAmount: number;
-  loanDate: Date;
-  intrest: number;
-  nextRepayment: Date;
-  repayedAmount: number;
   onPressCheckEligibility: Function;
 };
 
 const ActiveLoanCard = (props: Props) => {
-  if (!props.isActiveLoan) {
+  const loan = useAppSelector(state => state.persistedReducer.loan);
+  const tempDate = new Date();
+
+  if (loan === undefined) {
     return (
       <View className="mt-4 h-40 w-11/12 flex-col justify-between rounded-md bg-indigo-600 p-4 shadow-md">
         <View className="w-full flex-row items-end justify-between px-2">
@@ -46,10 +43,10 @@ const ActiveLoanCard = (props: Props) => {
 
   const [isAmountShow, setIsAmountShow] = useState<boolean>(false);
 
-  const intrestAmount = props.intrestAmount.toLocaleString('en-US', {
+  const intrestAmount = loan.borrowAmount.toLocaleString('en-US', {
     currency: 'INR',
   });
-  const repayedAmount = props.repayedAmount.toLocaleString('en-US', {
+  const repayedAmount = loan.instalmentAmount.toLocaleString('en-US', {
     currency: 'INR',
   });
 
@@ -85,7 +82,7 @@ const ActiveLoanCard = (props: Props) => {
           <Text className="w-fit text-sm text-gray-400">Next Repayment</Text>
           {isAmountShow ? (
             <Text className="text-base text-gray-300">
-              {`${props.nextRepayment.getDate()} - ${props.nextRepayment.getMonth()} - ${props.nextRepayment.getFullYear()}`}{' '}
+              {`02 - ${tempDate.getMonth() + 1} - ${tempDate.getFullYear()}`}
             </Text>
           ) : (
             <Text className="text-base text-gray-300"> DD - MM - YYYY </Text>
@@ -98,7 +95,7 @@ const ActiveLoanCard = (props: Props) => {
           </Text>
           {isAmountShow ? (
             <Text className="w-fit text-base text-gray-300">
-              {`${props.intrest}% `}
+              {`${loan.intrestRate}% `}
               <Text className="w-fit text-sm text-gray-400">p.a.</Text>
             </Text>
           ) : (

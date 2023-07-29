@@ -86,6 +86,14 @@ export const loanSlice = createSlice({
         state.intrestRate = action.payload;
       }
     },
+
+    setBorrowDate: state => {
+      if (!state.borrowedDate) {
+        state.borrowedDate = new Date();
+      } else {
+        return;
+      }
+    },
   },
 });
 
@@ -96,6 +104,7 @@ export const {
   setInstalment,
   setIntrestRate,
   setLoanStatus,
+  setBorrowDate,
 } = loanSlice.actions;
 
 export default loanSlice.reducer;

@@ -17,17 +17,17 @@ export const QuickMenuList: QuickMenuListType[] = [
   {
     icon: 'credit-card',
     name: 'Add account',
-    navRoute: 'Status',
+    navRoute: 'AddBank',
     onPress: () => {
       console.log('Add payment account clicked');
     },
   },
   {
-    icon: 'cubes',
-    name: 'Loan Packages',
-    navRoute: 'LoanPackage',
+    icon: 'tachometer-alt',
+    name: 'Loan Status',
+    navRoute: 'Status',
     onPress: () => {
-      console.log('Loan Packages clicked');
+      console.log('Status Screen clicked');
     },
   },
 ];

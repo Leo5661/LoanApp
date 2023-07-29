@@ -7,6 +7,7 @@ import LoanPackage from '../screens/LoanPackage';
 import CheckEligibilityScreen from '../screens/CheckEligibilityScreen';
 import DocumentVerification from '../screens/DocumentVerification';
 import LoanStatusScreen from '../screens/LoanStatusScreen';
+import AddBankAccountScreen from '../screens/AddBankAccountScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -18,6 +19,7 @@ export type HomeStackParamList = {
   DocumentVerification: undefined;
   LoanPackage: undefined;
   Status: undefined;
+  AddBank: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -40,6 +42,7 @@ const HomeNavigator = () => {
         component={DocumentVerification}
       />
       <HomeStack.Screen name="Status" component={LoanStatusScreen} />
+      <HomeStack.Screen name="AddBank" component={AddBankAccountScreen} />
     </HomeStack.Navigator>
   );
 };

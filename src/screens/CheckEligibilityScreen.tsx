@@ -12,7 +12,12 @@ import {PointsList} from '../utils/LoanInEligiblePointsList';
 import PointsCard from '../components/PointsCard';
 import EmiCard from '../components/EmiCard';
 import {isEligible} from '../utils/CheckLoanEligibility';
-import {Loan, LoanStatus, setLoanStatus} from '../redux/slices/loanSlice';
+import {
+  Loan,
+  LoanStatus,
+  setBorrowDate,
+  setLoanStatus,
+} from '../redux/slices/loanSlice';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'CheckEligibility'>;
 const title = 'Check Eligibility';
@@ -43,6 +48,7 @@ const CheckEligibilityScreen = ({navigation, route}: Props) => {
 
   const handleProceed = () => {
     dispatch(setLoanStatus(LoanStatus.APPLICATION_SUBMITED));
+    dispatch(setBorrowDate());
     sendData(loan);
     navigation.navigate('DocumentVerification');
   };
