@@ -4,6 +4,8 @@ import {Provider} from 'react-redux';
 import store from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
+import {PermissionsAndroid} from 'react-native';
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 let persistor = persistStore(store);
 

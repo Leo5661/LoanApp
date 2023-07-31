@@ -1,15 +1,15 @@
-import {View, Text, Image, Pressable} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../hooks/useReduxHooks';
 import RTNBioAuth from 'rtn-bio_auth/js/NativeBioAuth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useAuth} from '../hooks/useAuth';
 import {QuickMenuList, QuickMenuListType} from '../utils/QuickMenuList';
 import QuickFeatureCard from '../components/QuickFeaturesCard';
 import ActiveLoanCard from '../components/ActiveLoanCard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParamList} from '../navigation/HomeNavigator';
+import {openNotification} from '../redux/slices/notificationSlice';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
@@ -17,6 +17,9 @@ const HomeScreen = ({navigation}: Props) => {
   const name = useAppSelector(state => state.persistedReducer.user.fname);
   const user = useAppSelector(state => state.persistedReducer.user);
   const loan = useAppSelector(state => state.persistedReducer.loan);
+  const isNotification = useAppSelector(
+    state => state.persistedReducer.notification.isNewNotification,
+  );
 
   const isBioAuth = useAppSelector(
     state => state.persistedReducer.bioAuth.isBioAuth,
@@ -24,7 +27,6 @@ const HomeScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const isHwPresent = RTNBioAuth?.getAvailableBiometric();
   const [biometric, setBiometric] = useState<string | undefined>('');
-  const [isNotification, setIsNotification] = useState<boolean>(false);
 
   useEffect(() => {
     const data = async () => {
@@ -46,7 +48,7 @@ const HomeScreen = ({navigation}: Props) => {
     <View className="h-full w-full flex-col">
       <View className="w-full flex-row justify-between border-b border-gray-200 drop-shadow">
         <Pressable
-          className="m-3"
+          className="m-3 h-6 w-6"
           onPress={() => {
             console.log('Clicked home menu');
           }}
@@ -55,9 +57,10 @@ const HomeScreen = ({navigation}: Props) => {
         </Pressable>
 
         <Pressable
-          className="relative m-3"
+          className="relative m-3 h-6 w-6"
           onPress={() => {
-            console.log('Clicked home notification');
+            dispatch(openNotification(false));
+            navigation.navigate('Notification');
           }}
         >
           {isNotification ? (

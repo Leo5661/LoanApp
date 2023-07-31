@@ -14,7 +14,7 @@ const RepaymentCard = (props: Props) => {
   });
   const duedate = new Date();
 
-  if (loan === undefined) {
+  if (loan.principleAmount === 0) {
     return (
       <View className="mt-4 h-40 w-11/12 flex-col justify-around rounded-md bg-white p-4 shadow-md">
         <Text className="w-full text-center text-xl font-light text-gray-500">

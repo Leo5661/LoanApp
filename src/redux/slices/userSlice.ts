@@ -1,5 +1,4 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {Loan} from './loanSlice';
 
 export type User = {
   uId: string;
@@ -13,7 +12,6 @@ export type User = {
   companyName: string;
   position: string;
   monthlyPay: number;
-  loans: Loan[];
 };
 
 const initialState: User | null = {
@@ -28,7 +26,6 @@ const initialState: User | null = {
   companyName: '',
   position: '',
   monthlyPay: 0,
-  loans: [],
 };
 
 export const userSlice = createSlice({
@@ -83,12 +80,9 @@ export const userSlice = createSlice({
       }
     },
 
-    setLoan: (state, action: PayloadAction<Loan>) => {
-      state.loans.push(action.payload);
-    },
-
     setUserfromCloud: (state, action: PayloadAction<User | null>) => {
       if (action.payload != null) {
+        console.log(action.payload);
         return action.payload;
       } else {
         return initialState;

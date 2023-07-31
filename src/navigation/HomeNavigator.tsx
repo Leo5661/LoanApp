@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
@@ -8,6 +7,7 @@ import CheckEligibilityScreen from '../screens/CheckEligibilityScreen';
 import DocumentVerification from '../screens/DocumentVerification';
 import LoanStatusScreen from '../screens/LoanStatusScreen';
 import AddBankAccountScreen from '../screens/AddBankAccountScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -43,6 +43,7 @@ const HomeNavigator = () => {
       />
       <HomeStack.Screen name="Status" component={LoanStatusScreen} />
       <HomeStack.Screen name="AddBank" component={AddBankAccountScreen} />
+      <HomeStack.Screen name="Notification" component={NotificationScreen} />
     </HomeStack.Navigator>
   );
 };

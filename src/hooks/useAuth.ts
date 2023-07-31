@@ -6,9 +6,8 @@ import {
   setUserId,
   setUserfromCloud,
 } from '../redux/slices/userSlice';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
+import {setLoanFromCloud} from '../redux/slices/loanSlice';
 
 export const useAuth = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
@@ -23,6 +22,9 @@ export const useAuth = () => {
 
     if (userResult) {
       const result = userResult.data();
+      console.log('the data from cloud', result);
+      dispatch(setLoanFromCloud(result?.userData.loans));
+      delete result?.userData.loans;
       dispatch(setUserfromCloud(result?.userData));
     } else {
       dispatch(setUserId(user.uid));

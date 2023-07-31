@@ -19,8 +19,8 @@ export type Loan = {
   loanStatus: LoanStatus;
   instalmentAmount: number;
   intrestRate: number;
-  nextDueDate: Date | undefined;
-  borrowedDate: Date | undefined;
+  nextDueDate: number | undefined;
+  borrowedDate: number | undefined;
 };
 
 const initialState: Loan = {
@@ -89,9 +89,19 @@ export const loanSlice = createSlice({
 
     setBorrowDate: state => {
       if (!state.borrowedDate) {
-        state.borrowedDate = new Date();
+        const date = new Date();
+        state.borrowedDate = date.getTime();
       } else {
         return;
+      }
+    },
+
+    setLoanFromCloud: (state, action: PayloadAction<Loan>) => {
+      if (action.payload != null) {
+        console.log(action.payload);
+        return action.payload;
+      } else {
+        return initialState;
       }
     },
   },
@@ -105,6 +115,7 @@ export const {
   setIntrestRate,
   setLoanStatus,
   setBorrowDate,
+  setLoanFromCloud,
 } = loanSlice.actions;
 
 export default loanSlice.reducer;

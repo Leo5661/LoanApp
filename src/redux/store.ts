@@ -13,6 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import loanSlice from './slices/loanSlice';
 import documentSlice from './slices/documentSlice';
+import notificationSlice from './slices/notificationSlice';
 
 const persistConfig = {
   key: 'loanApp',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   bioAuth: bioAuthSlice,
   loan: loanSlice,
   doc: documentSlice,
+  notification: notificationSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

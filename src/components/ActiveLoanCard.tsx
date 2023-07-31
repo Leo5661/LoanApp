@@ -10,9 +10,17 @@ type Props = {
 
 const ActiveLoanCard = (props: Props) => {
   const loan = useAppSelector(state => state.persistedReducer.loan);
+  const [isAmountShow, setIsAmountShow] = useState<boolean>(false);
+
+  const intrestAmount = loan.borrowAmount.toLocaleString('en-US', {
+    currency: 'INR',
+  });
+  const repayedAmount = loan.instalmentAmount.toLocaleString('en-US', {
+    currency: 'INR',
+  });
   const tempDate = new Date();
 
-  if (loan === undefined) {
+  if (loan.principleAmount === 0) {
     return (
       <View className="mt-4 h-40 w-11/12 flex-col justify-between rounded-md bg-indigo-600 p-4 shadow-md">
         <View className="w-full flex-row items-end justify-between px-2">
@@ -40,15 +48,6 @@ const ActiveLoanCard = (props: Props) => {
       </View>
     );
   }
-
-  const [isAmountShow, setIsAmountShow] = useState<boolean>(false);
-
-  const intrestAmount = loan.borrowAmount.toLocaleString('en-US', {
-    currency: 'INR',
-  });
-  const repayedAmount = loan.instalmentAmount.toLocaleString('en-US', {
-    currency: 'INR',
-  });
 
   return (
     <View className="mt-4 h-40 w-11/12 flex-col rounded-md bg-indigo-600 p-4 shadow-md">
