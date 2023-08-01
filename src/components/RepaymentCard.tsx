@@ -7,12 +7,16 @@ import MaterialButtonSolid from './MaterialButtonSolid';
 type Props = {};
 
 const RepaymentCard = (props: Props) => {
+  let dateTime, date;
   const loan = useAppSelector(state => state.persistedReducer.loan);
 
   const currentEmiInstalment = loan.instalmentAmount.toLocaleString('en-US', {
     currency: 'INR',
   });
-  const duedate = new Date();
+  if (loan.borrowedDate) {
+    dateTime = new Date(loan.borrowedDate).toLocaleString().split(' ');
+    date = dateTime[0].split('/');
+  }
 
   if (loan.principleAmount === 0) {
     return (
@@ -48,7 +52,7 @@ const RepaymentCard = (props: Props) => {
           <Text className="w-fit text-sm text-gray-500">Due date</Text>
 
           <Text className="text-base font-semibold text-gray-500 ">
-            {`${duedate.getDate()} - ${duedate.getMonth()} - ${duedate.getFullYear()}`}{' '}
+            {`02 - ${parseInt(date![1]) + 1} - ${date![2].slice(0, -1)}`}
           </Text>
         </View>
 

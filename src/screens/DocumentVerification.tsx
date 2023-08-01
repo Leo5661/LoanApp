@@ -21,7 +21,6 @@ const DocumentVerification = ({navigation}: Props) => {
     state => state.persistedReducer.loan.loanStatus,
   );
   const uid = useAppSelector(state => state.persistedReducer.user.uId);
-
   const dispatch = useAppDispatch();
 
   const updateStatusOnCloud = () => {
