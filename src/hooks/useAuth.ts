@@ -20,12 +20,12 @@ export const useAuth = () => {
       .doc(user.uid)
       .get();
 
-    if (userResult) {
-      const result = userResult.data();
+    const result = userResult.data();
+    if (result) {
       console.log('the data from cloud', result);
-      dispatch(setLoanFromCloud(result?.userData.loans));
-      delete result?.userData.loans;
-      dispatch(setUserfromCloud(result?.userData));
+      dispatch(setLoanFromCloud(result.userData.loans));
+      delete result.userData.loans;
+      dispatch(setUserfromCloud(result.userData));
     } else {
       dispatch(setUserId(user.uid));
     }
@@ -36,40 +36,50 @@ export const useAuth = () => {
     password: string,
   ) => {
     setIsLoading(true);
-    try {
-      const res = await auth().createUserWithEmailAndPassword(email, password);
-      console.log(res.user);
-      if (res.user.email) {
-        dispatch(setUserEmail(res.user.email));
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await auth().createUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        console.log(res.user);
+        if (res.user.email) {
+          dispatch(setUserEmail(res.user.email));
+        }
+        resolve(res.user);
+      } catch (error: any) {
+        console.log(error);
+        reject(undefined);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
-  const signInUsingEmailAndPassword = async (
-    email: string,
-    password: string,
-  ) => {
+  const signInUsingEmailAndPassword = (email: string, password: string) => {
     setIsLoading(true);
-    try {
-      const res = await auth().signInWithEmailAndPassword(email, password);
-      console.log(res.user);
-      if (res.user.email) {
-        dispatch(setUserEmail(res.user.email));
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await auth().signInWithEmailAndPassword(email, password);
+        console.log(res.user);
+        if (res.user.email) {
+          dispatch(setUserEmail(res.user.email));
+        }
+        checkUser(res.user);
+        resolve(res.user);
+      } catch (error: any) {
+        console.log(error);
+        reject(undefined);
+      } finally {
+        setIsLoading(false);
       }
-      checkUser(res.user);
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   useEffect(() => {
     auth().onAuthStateChanged(user => {
+      console.log('user after auth: ', user);
       if (user) {
         // dispatch(setUserEmail(user.email));
         setUser(user);
